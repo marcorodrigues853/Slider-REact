@@ -4,7 +4,7 @@ const Card = () => {
   return (
     <StyledCard>
       <StyledPicture>
-        <img src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/151.jpg" />
+        <img src="/images/image1.webp" />
 
         <StyledSocial>
           <span>F</span>

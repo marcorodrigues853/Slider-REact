@@ -20,10 +20,9 @@ const StyledArrows = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 100%;
-  
 `;
