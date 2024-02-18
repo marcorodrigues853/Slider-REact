@@ -1,6 +1,6 @@
 import "./App.css";
-import Slider from "./Slider";
-import Card from "./components/Card";
+import Slider from "./components/Slider/Slider";
+import Card from "./components/Card/Card";
 
 function App() {
   return (

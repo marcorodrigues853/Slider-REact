@@ -60,9 +60,7 @@ export const StyledSocial = styled.div`
   color: #292929;
 `;
 
-export const StyledButton = styled.div`
-  display: flex;
-`;
+export const StyledButton = styled.div``;
 
 export const Button = ({ children }) => {
   return (

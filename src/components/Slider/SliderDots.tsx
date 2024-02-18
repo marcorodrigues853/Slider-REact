@@ -1,9 +1,13 @@
+import { Key } from "react";
 import styled from "styled-components";
 
 const SliderDots = ({ dots }) => {
   return (
     <StyledDots>
-      {dots && dots.map((dot) => <input type="radio" key={dot} />)}
+      {dots &&
+        dots.map((dot: Key | null | undefined) => (
+          <input type="radio" key={dot} />
+        ))}
     </StyledDots>
   );
 };
