@@ -4,7 +4,7 @@ import Card from "./components/Card/Card";
 function App() {
   return (
     <>
-      <Slider>
+      <Slider arrows={false} dots={true}>
         <Card></Card>
         <Card></Card>
         <Card></Card>

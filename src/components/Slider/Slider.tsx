@@ -1,7 +1,8 @@
-import styled, { keyframes } from "styled-components";
+import styled from "styled-components";
 import SliderDots from "./SliderDots";
 import SliderArrows from "./SliderArrows";
 import { useState } from "react";
+import Card from "../Card/Card";
 
 const images = [
   "https://i0.wp.com/picjumbo.com/wp-content/uploads/beautiful-nature-mountain-scenery-with-flowers-free-photo.jpg?w=600&quality=80",
@@ -10,7 +11,7 @@ const images = [
   "https://cdn.pixabay.com/photo/2022/08/09/16/19/sea-7375377_960_720.jpg",
 ];
 
-const Slider = ({ children, slides = images }) => {
+const Slider = ({ children, slides = images, arrows = true, dots = false }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   function showPrevSlide(
     event: MouseEvent<HTMLButtonElement, MouseEvent>
@@ -38,8 +39,8 @@ const Slider = ({ children, slides = images }) => {
   return (
     <>
       <StyledSlider>
-        {/* {children} */}
         <SliderItems aria-hidden={currentIndex !== 0}>
+          {/* {children} */}
           {slides.map((slide) => (
             <img
               src={slide}
@@ -50,26 +51,33 @@ const Slider = ({ children, slides = images }) => {
         {/* <img src={slides[currentIndex]} /> */}
         {/* <SliderArrows></SliderArrows> */}
 
-        <button
-          style={{ left: 0 }}
-          onClick={showPrevSlide}
-          aria-label="View Previous"
-        >
-          {"<"}
-        </button>
-        <button
-          style={{ right: 0 }}
-          onClick={showNextSlide}
-          aria-label="View Next"
-        >
-          {">"}
-        </button>
+        {arrows && (
+          <div>
+            <button
+              style={{ left: 0 }}
+              onClick={showPrevSlide}
+              aria-label="View Previous"
+            >
+              {"<"}
+            </button>
+            <button
+              style={{ right: 0 }}
+              onClick={showNextSlide}
+              aria-label="View Next"
+            >
+              {">"}
+            </button>
+          </div>
+        )}
       </StyledSlider>
-      <SliderDots
-        dots={slides}
-        handlerDotClick={handlerDotClick}
-        currentIndex={currentIndex}
-      ></SliderDots>
+
+      {dots && (
+        <SliderDots
+          dots={slides}
+          handlerDotClick={handlerDotClick}
+          currentIndex={currentIndex}
+        ></SliderDots>
+      )}
     </>
   );
 };
