@@ -11,10 +11,13 @@ const images = [
   "https://cdn.pixabay.com/photo/2022/08/09/16/19/sea-7375377_960_720.jpg",
 ];
 
-const Slider = (
-  { children, slides = images, arrows = true, dots = false },
-  autoSlide = false
-) => {
+const Slider = ({
+  children,
+  slides = images,
+  arrows = true,
+  dots = false,
+  autoSlide = false,
+}) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   function showPrevSlide(): void {
     setCurrentIndex((prevIndex) => {
@@ -37,12 +40,11 @@ const Slider = (
   };
 
   useEffect(() => {
-    let interval;
     if (autoSlide) {
-      interval = setInterval(showNextSlide, 3000);
+      const interval = setInterval(showNextSlide, 3000);
+      return () => clearInterval(interval);
     }
-    return () => clearInterval(interval);
-  }, [currentIndex]); // Dependency array includes currentIndex to ensure the effect uses the latest value
+  }, [autoSlide, showNextSlide]); // Dependency array includes currentIndex to ensure the effect uses the latest value
   return (
     <StyledSlider>
       <StyledSliderItems aria-hidden={currentIndex !== 0}>
