@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import SliderDots from "./SliderDots";
 import SliderArrows from "./SliderArrows";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Card from "../Card/Card";
 
 const images = [
@@ -11,23 +11,22 @@ const images = [
   "https://cdn.pixabay.com/photo/2022/08/09/16/19/sea-7375377_960_720.jpg",
 ];
 
-const Slider = ({ children, slides = images, arrows = true, dots = false }) => {
+const Slider = (
+  { children, slides = images, arrows = true, dots = false },
+  autoSlide = false
+) => {
   const [currentIndex, setCurrentIndex] = useState(0);
-  function showPrevSlide(
-    event: MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void {
-    setCurrentIndex((index) => {
-      if (index === 0) return slides.length - 1;
-      return index - 1;
+  function showPrevSlide(): void {
+    setCurrentIndex((prevIndex) => {
+      if (prevIndex === 0) return slides.length - 1;
+      return prevIndex - 1;
     });
   }
 
-  function showNextSlide(
-    event: MouseEvent<HTMLButtonElement, MouseEvent>
-  ): void {
-    setCurrentIndex((index) => {
-      if (index === slides.length - 1) return 0;
-      return index + 1;
+  function showNextSlide(): void {
+    setCurrentIndex((prevIndex) => {
+      if (prevIndex === slides.length - 1) return 0;
+      return prevIndex + 1;
     });
   }
 
@@ -36,41 +35,46 @@ const Slider = ({ children, slides = images, arrows = true, dots = false }) => {
   ) => {
     setCurrentIndex(index);
   };
+
+  useEffect(() => {
+    let interval;
+    if (autoSlide) {
+      interval = setInterval(showNextSlide, 3000);
+    }
+    return () => clearInterval(interval);
+  }, [currentIndex]); // Dependency array includes currentIndex to ensure the effect uses the latest value
   return (
-    <>
-      <StyledSlider>
-        <SliderItems aria-hidden={currentIndex !== 0}>
-          {/* {children} */}
-          {slides.map((slide) => (
-            <img
-              src={slide}
-              style={{ translate: `${-100 * currentIndex}%` }}
-            ></img>
-          ))}
-        </SliderItems>
-        {/* <img src={slides[currentIndex]} /> */}
-        {/* <SliderArrows></SliderArrows> */}
+    <StyledSlider>
+      <StyledSliderItems aria-hidden={currentIndex !== 0}>
+        {/* {children} */}
+        {slides.map((slide) => (
+          <img
+            src={slide}
+            style={{ translate: `${-100 * currentIndex}%` }}
+          ></img>
+        ))}
+      </StyledSliderItems>
+      {/* <img src={slides[currentIndex]} /> */}
+      {/* <SliderArrows></SliderArrows> */}
 
-        {arrows && (
-          <div>
-            <button
-              style={{ left: 0 }}
-              onClick={showPrevSlide}
-              aria-label="View Previous"
-            >
-              {"<"}
-            </button>
-            <button
-              style={{ right: 0 }}
-              onClick={showNextSlide}
-              aria-label="View Next"
-            >
-              {">"}
-            </button>
-          </div>
-        )}
-      </StyledSlider>
-
+      {arrows && (
+        <div>
+          <button
+            style={{ left: 0 }}
+            onClick={showPrevSlide}
+            aria-label="View Previous"
+          >
+            {"<"}
+          </button>
+          <button
+            style={{ right: 0 }}
+            onClick={showNextSlide}
+            aria-label="View Next"
+          >
+            {">"}
+          </button>
+        </div>
+      )}
       {dots && (
         <SliderDots
           dots={slides}
@@ -78,7 +82,7 @@ const Slider = ({ children, slides = images, arrows = true, dots = false }) => {
           currentIndex={currentIndex}
         ></SliderDots>
       )}
-    </>
+    </StyledSlider>
   );
 };
 
@@ -120,7 +124,7 @@ export const StyledSlider = styled.div`
   } */
 `;
 
-export const SliderItems = styled.div`
+export const StyledSliderItems = styled.div`
   width: 100%;
   height: 100%;
   overflow: hidden;
@@ -129,7 +133,7 @@ export const SliderItems = styled.div`
   img {
     object-fit: cover;
     width: 100%;
-    height: 100%;
+    height: auto;
     display: block;
     flex-shrink: 0;
     flex-grow: 0;
